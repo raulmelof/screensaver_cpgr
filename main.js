@@ -124,6 +124,33 @@ function makeProgram(gl, vertexShaderSrc, fragmentShaderSrc) {
     alert("ERRO na link-edição");
 }
 
+// sorteia um inteiro entre min e max
+// util pro tamanho da forma e o centroide
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// sorteia uma cor aleatoria com alpha 1.0
+function getRandomColor() {
+    return [Math.random(), Math.random(), Math.random(), 1.0];
+}
+
+// sorteia um tipo de forma e ja devolve instanciado
+function gerarFormaAleatoria(canvasWidth, canvasHeight) {
+    const tipos = [Triangulo, Quadrado, Pentagono];
+    const TipoSorteado = tipos[getRandomInt(0, 2)];
+    
+    // sorteia um tamanho de lado (coloquei entre 20 e 150 mas ajusta como ficar melhor visualmente)
+    const tamanhoLado = getRandomInt(20, 150);
+    
+    // sorteia um centroide
+    const centroide = [getRandomInt(0, canvasWidth), getRandomInt(0, canvasHeight)];
+    
+    const cor = getRandomColor();
+
+    return new TipoSorteado(tamanhoLado, centroide, cor);
+}
+
 function main() {
     var canvas = document.getElementById("canvas");
     var gl = canvas.getContext("webgl2"); //Pois estamos em 2D
