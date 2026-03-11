@@ -45,19 +45,25 @@ class Renderizador {
 var vertexShaderSrc = `#version 300 es
 
     in vec2 aPosition;
+    uniform vec2 uResolution; //recebe a resolução do canvas, para usar na conversão de coordenadas
 
     void main() {
-        gl_Position = vec4(aPosition, 0.0, 1.0);
+        vec2 zeroToOne = aPosition / uResolution;//converte em uma escala de 0 a 1
+        vec2 zeroToTwo = zeroToOne * 2.0;//converte em uma escala de 0 a 2
+        vec2 clipSpace = zeroToTwo - 1.0;//converte em uma escala de -1 a 1
+
+        gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);//inverte o eixo y, pq o canvas tem o y para baixo, e o OpenGL tem o y para cima
     }
 `;
 
 var fragmentShaderSrc = `#version 300 es
     precision highp float; //Pode ser double também
 
+    uniform vec4 uColor;//recebe a cor do objeto, para usar na renderização(vamos sortear a cor no js)
     out vec4 fColor;
 
     void main() {
-        fColor = vec4(1.0, 0.0, 0.0, 1.0); //(R, G, B, Alpha)
+        fColor = uColor;//repassa a cor para o fragmento
     }
 `;
 
