@@ -12,8 +12,11 @@ class Renderizador {
     renderiza(forma, vertexShaderSrc, fragmentShaderSrc) {
         var gl = this.gl;
         var program = makeProgram(gl, vertexShaderSrc, fragmentShaderSrc);
-        if(program) {alert("Criação de shaders ok!!");}
+        //if(program) {alert("Criação de shaders ok!!");}
         var aPosition = gl.getAttribLocation(program, "aPosition");
+        // pega a localizaçao das variaveis uniformes
+        var uResolutionLocation = gl.getUniformLocation(program, "uResolution");
+        var uColorLocation = gl.getUniformLocation(program, "uColor");
         var positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         forma.geraMatrizVertices();
@@ -33,6 +36,11 @@ class Renderizador {
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.useProgram(program);
+        // passa a altura e largura para o shader
+        gl.uniform2f(uResolutionLocation, gl.canvas.width, gl.canvas.height);
+        // passa a cor para o shader
+        var cor = forma.getCor();
+        gl.uniform4f(uColorLocation, cor[0], cor[1], cor[2], cor[3]);
         gl.bindVertexArray(vao);
         gl.drawArrays(
             gl.TRIANGLE_FAN,        //formato de desenho
@@ -156,12 +164,8 @@ function main() {
     var gl = canvas.getContext("webgl2"); //Pois estamos em 2D
     if(!gl) {alert("Não consegui abrir o contexto 2D");}
     const renderizador = new Renderizador(gl);
-    const triangulo = new Triangulo(1, [0,0], [1,0,0]);
-    const quadrado = new Quadrado(1, [0,0], [1,0,0]);
-    const pentagono = new Pentagono(1, [0,0], [1,0,0]);
-    renderizador.renderiza(triangulo, vertexShaderSrc, fragmentShaderSrc);
-    //renderizador.renderiza(quadrado, vertexShaderSrc, fragmentShaderSrc);
-    //renderizador.renderiza(pentagono, vertexShaderSrc, fragmentShaderSrc);
+    const formaAleatoria = gerarFormaAleatoria(canvas.width, canvas.height);
+    renderizador.renderiza(formaAleatoria, vertexShaderSrc, fragmentShaderSrc);
 }
 
 window.onload = main();
