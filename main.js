@@ -72,7 +72,7 @@ function main() {
     const formas = [];
     let qtdFormas = 0;
     const limiteDeFormas = 50;
-    const intervalo = 1000; //Milissegundos
+    const intervalo = 500; //Milissegundos
     let ultimoTempo = 0;
 
     function looparInfinitamente(timestamp) {
