@@ -17,5 +17,5 @@ export default class Forma {
         return this.cor;
     }
 
-    geraMatrizVertices() {}
+    gerarMatrizVertices() {}
 }

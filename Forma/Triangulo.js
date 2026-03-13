@@ -6,7 +6,7 @@ export default class Triangulo extends Forma {
         this.qtdVertices = 3;
     }
 
-    geraMatrizVertices() {
+    gerarMatrizVertices() {
         const cx = this.centroide[0];
         const cy = this.centroide[1];
 
@@ -18,7 +18,7 @@ export default class Triangulo extends Forma {
 
         for (let i = 0; i < 3; i++) {
 
-            const angulo = (2 * Math.PI * i) / 3 + Math.PI / 2;
+            const angulo = (2 * Math.PI * i) / 3 - Math.PI / 2;
 
             const x = cx + raio * Math.cos(angulo);
             const y = cy + raio * Math.sin(angulo);
